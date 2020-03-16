@@ -1,0 +1,15 @@
+<html>
+{% block content %}
+<div class="formwrapper">
+    <h2 class="title">SpaceX Launch Search</h2>
+    <form method="POST" action="/">
+        <div>
+            {{ form.query_type.label}}
+            {{ form.query_type}}
+        </div>
+        <br>
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}
+</html>

@@ -1,0 +1,43 @@
+<html>
+<style>
+    img.one {
+        height: 20%;
+        width: 10%;
+    }
+</style>
+{% block content %}
+<div>
+    <h2 class="title">SpaceX Launch Search by Mission Name</h2>
+    <form method="POST" action="/mission">
+        <div>
+            {{ form.mission_names.label }}
+            {{ form.mission_names }}
+        </div>
+        <br>
+        {{ form.submit }}
+    </form>
+</div>
+{% if request_method == 'POST' %}
+<br>
+<br>
+<b>Mission Patch:</b>
+<br>
+<img class="one" src="{{ mission_patch | safe }}">
+<br>
+<br>
+<b>Mission Details:</b>
+{{ data | safe }}
+<br>
+<br>
+<hr>
+<b>Links:</b>
+<li><b>Article Link:</b> <a href="{{ article_link }}">{{ article_link }}</a></li>
+<li><b>Wikipedia:</b> <a href="{{ wiki }}">{{ wiki }}</a></li>
+<br>
+{% endif %}
+<br>
+<div>
+    <a href="{{ url_for('query') }}">Home</a>
+</div>
+{% endblock %}
+</html>
