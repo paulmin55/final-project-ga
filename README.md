@@ -26,4 +26,4 @@ $ docker run --rm -dp 5000:5000 <repo>/<image_name>:<tag>
 * search by `mission name`: [localhost:5000/mission](localhost:5000/mission)
 
 ### Notes
-* Incase there's no internet connectivity, it will use an example SpaceX API JSON dump file `spacex_launch_data.json`.
+* App will use an example SpaceX API JSON dump file `spacex_launch_data.json` in case there's no network connectivity.
