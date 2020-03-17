@@ -3,6 +3,7 @@ import requests
 import json
 import os
 
+
 class Launch:
     def __init__(self):
         self.host = 'https://api.spacexdata.com/v3/launches'
@@ -10,8 +11,8 @@ class Launch:
         self.local_backup_file = self.current_directory + '/spacex_launch_data.json'
 
     def get_data(self):
-        """ Get's SpaceX Data from API or
-        fails over to example launch data json
+        """ Get's SpaceX Data from API or fails over to
+         example launch data json
         file if Internet is not present. """
         try:
             response = requests.get(self.host).json()
