@@ -21,9 +21,9 @@ $ docker run --rm -dp 5000:5000 <repo>/<image_name>:<tag>
 ```
 
 ### URL
-* index: [localhost:5000](localhost:5000)
-* search by `flight number`: [localhost:5000/flight](localhost:5000/flight)
-* search by `mission name`: [localhost:5000/mission](localhost:5000/mission)
+* index: [localhost:5000](http://localhost:5000)
+* search by `flight number`: [localhost:5000/flight](http://localhost:5000/flight)
+* search by `mission name`: [localhost:5000/mission](http://localhost:5000/mission)
 
 ### Notes
-* App will use an example SpaceX API JSON dump file `spacex_launch_data.json` in case there's no network connectivity.
+* App will use an example SpaceX API JSON dump file [spacex_launch_data.json](spacex_launch_data.json) in case there's no network connectivity.
