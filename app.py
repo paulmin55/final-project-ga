@@ -112,6 +112,7 @@ def flights_by_rocket():
                                     count_values=rocket_count_list)
     return flights_by_rocket_stats
 
+
 def site_usage():
     """ return flights by rocket graph """
     launch_data = Launch().get_data()
@@ -132,6 +133,7 @@ def site_usage():
                                     y_label='Site',
                                     count_values=launch_site_location_count_list)
     return launch_site_location_list_stats
+
 
 def process_dataframe(result_df):
     """ Logic to create combine dataframe based on
