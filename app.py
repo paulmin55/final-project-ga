@@ -88,7 +88,10 @@ def statistics():
     html_file = 'statistics.html'
     flights_by_rocket_stats = flights_by_rocket()
     launch_site_location_list_stats = site_usage()
-    return render_template(html_file, flights_by_rocket_stats=flights_by_rocket_stats, launch_site_location_list_stats=launch_site_location_list_stats)
+    return render_template(
+                            html_file,
+                            flights_by_rocket_stats=flights_by_rocket_stats,
+                            launch_site_location_list_stats=launch_site_location_list_stats)
 
 
 def flights_by_rocket():
