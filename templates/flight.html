@@ -6,6 +6,9 @@
     }
 </style>
 {% block content %}
+<div align="right">
+    <a href="{{ url_for('query') }}">Home</a>
+</div>
 <div>
     <h2 class="title">SpaceX Launch Search by Flight ID</h2>
     <form method="POST" action="/flight">
@@ -35,10 +38,6 @@
 <li><b>Wikipedia:</b> <a href={{ wiki }}>{{ wiki }}</a></li>
 <br>
 {% endif %}
-<br>
-<div>
-    <a href="{{ url_for('query') }}">Home</a>
-</div>
 {% endblock %}
 </html>
   

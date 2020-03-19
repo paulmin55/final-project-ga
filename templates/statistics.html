@@ -1,9 +1,12 @@
 <html>
     {% block content %}
-    <div>
+    <div align="right">
         <a href="{{ url_for('query') }}">Home</a>
     </div>
-
-    <img src="data:image/png;base64,{{ flights_by_rocket_stats }}" style="width: 100%; height: 100%; contain: content; align-content: center;">
+    <div>
+        <h2 class="title">SpaceX Launch Statistics</h2>
+        <img src="data:image/png;base64,{{ flights_by_rocket_stats }}" style="width: 100%; height: 100%; contain: content; align-content: center;">
+        <img src="data:image/png;base64,{{ launch_site_location_list_stats }}" style="width: 100%; height: 100%; contain: content; align-content: center;">
+    </div>
     {% endblock %}
 </html>

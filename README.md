@@ -4,6 +4,10 @@ Queries [SpaceX API](https://api.spacexdata.com/v3/launches) for historical flig
 * __flight number__
 * __mission name__
 
+Statistics
+* __number of flights by rocket name__
+* __number of times launch site was used__
+
 ## Getting Started
 ### Requirements
 * python3
