@@ -34,7 +34,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: paulmin925/final-project-ga
+        name: ${{ secrets.DOCKER_REPO_NAME }}/final-project-ga
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 

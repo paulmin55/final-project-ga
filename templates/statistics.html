@@ -1,5 +1,8 @@
 <html>
     {% block content %}
-    <img src="data:image/png;base64,{{ rocket_types }}">
+    <img src="data:image/png;base64,{{ flights_by_rocket_stats }}" style="width: 100%; height: 100%; contain: content; align-content: center;">
+    <div>
+        <a href="{{ url_for('query') }}">Home</a>
+    </div>
     {% endblock %}
 </html>
