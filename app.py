@@ -1,7 +1,11 @@
 from flask import Flask, url_for, render_template, redirect, request
 from form import QueryForm, FlightIdQueryForm, MissionNameQueryForm
 from data import Launch
-from pandas import concat, json_normalize
+from pandas import pandas, concat, json_normalize
+
+import io
+import base64
+import matplotlib
 
 app = Flask(__name__)
 enable_csrf = False
@@ -17,6 +21,8 @@ def query():
     if request.method == 'POST':
         if form.query_type.data == default_choice:
             redirect_page = 'flight'
+        elif form.query_type.data =='statistics':
+            redirect_page = 'statistics'
         else:
             redirect_page = 'mission'
         return redirect(url_for(redirect_page))
@@ -68,6 +74,23 @@ def mission():
                                 request_method=request.method)
     return render_template(html_file, form=form)
 
+@app.route('/statistics', methods=http_methods)
+def statistics():
+    """ show statistics """
+    html_file = 'statistics.html'
+    launch_data = Launch().get_data()
+    rocket_info =  launch_data[['rocket']].to_dict(orient='index')
+    rocket_types = []
+    for _, value in rocket_info.items():
+        rocket_types.append(value['rocket']['rocket_name'])
+    rocket_type_series = pandas.Series(rocket_types).value_counts().plot(kind='bar').get_figure()
+    buffer_obj = io.BytesIO()
+    rocket_type_series.savefig(buffer_obj, format='png')
+    buffer_obj.seek(0)
+    buffer = b''.join(buffer_obj)
+    buffer_encoded = base64.b64encode(buffer)
+    figure = buffer_encoded.decode('utf-8')
+    return render_template(html_file, rocket_types = figure)
 
 def process_dataframe(result_df):
     """ Logic to create combine dataframe based on
@@ -88,3 +111,4 @@ def process_dataframe_links(result_df):
     """ Extracts links """
     links = json_normalize(result_df.iloc[0]['links'])
     return links
+    
