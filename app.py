@@ -26,7 +26,7 @@ def query():
     if request.method == 'POST':
         if form.query_type.data == default_choice:
             redirect_page = 'flight'
-        elif form.query_type.data == 'mission_name':
+        elif form.query_type.data == 'mission_name_query':
             redirect_page = 'mission'
         elif form.query_type.data == 'statistics':
             redirect_page = 'statistics'

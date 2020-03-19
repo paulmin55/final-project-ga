@@ -5,9 +5,11 @@ from wtforms import SelectField, SubmitField
 
 class QueryForm(FlaskForm):
     """Flight ID Query Form"""
-    default_choice = 'flight_number'
-    query_choices = [(default_choice, default_choice), ('mission_name', 'mission_name'), ('statistics', 'statistics')]
-    query_type = SelectField('Query By: ', choices=query_choices, default=default_choice)
+    default_choice = 'flight_number_query'
+    query_choices = [(default_choice, default_choice),
+                    ('mission_name_query', 'mission_name_query'),
+                    ('statistics', 'statistics')]
+    query_type = SelectField('Select: ', choices=query_choices, default=default_choice)
     submit = SubmitField('Submit')
 
 
