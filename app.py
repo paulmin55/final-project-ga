@@ -15,6 +15,7 @@ plt.rcParams['font.size'] = 10
 plt.gcf().subplots_adjust(left=0.20)
 enable_csrf = False
 http_methods = ('GET', 'POST')
+launch_data = Launch().get_data()
 
 
 @app.route('/', methods=http_methods)
@@ -41,7 +42,6 @@ def flight():
     """ Route for query by flight number """
     form = FlightIdQueryForm(meta={'csrf': enable_csrf})
     html_file = 'flight.html'
-    launch_data = Launch().get_data()
     flight_id = form.flight_numbers.data
     result_df = launch_data[launch_data['flight_number'] == flight_id]
 
@@ -64,7 +64,6 @@ def mission():
     """ Route for query by Mission Name """
     form = MissionNameQueryForm(meta={'csrf': enable_csrf})
     html_file = 'mission.html'
-    launch_data = Launch().get_data()
     mission_name = form.mission_names.data
     result_df = launch_data[launch_data['mission_name'] == mission_name]
 
@@ -88,25 +87,44 @@ def statistics():
     html_file = 'statistics.html'
     flights_by_rocket_stats = flights_by_rocket()
     launch_site_location_list_stats = site_usage()
+    successful_rocket_launch_stats = rocket_launch_stats()
     return render_template(
                             html_file,
                             flights_by_rocket_stats=flights_by_rocket_stats,
+                            successful_rocket_launch_stats=successful_rocket_launch_stats,
                             launch_site_location_list_stats=launch_site_location_list_stats)
 
 
-def flights_by_rocket():
-    """ return flights by rocket graph """
-    launch_data = Launch().get_data()
+def rocket_launch_count():
+    """ rocket count """
     rocket_info = launch_data[['rocket']].to_dict(orient='index')
     rocket_types = []
-
     for _, value in rocket_info.items():
         rocket_types.append(value['rocket']['rocket_name'])
 
     rocket_type_series = pandas.Series(rocket_types)
     rocket_type_counts = rocket_type_series.value_counts()
-    rocket_type_count_plot = rocket_type_counts.plot(kind='barh').get_figure()
-    rocket_count_list = list(rocket_type_counts)
+    return rocket_type_counts
+
+
+def successful_rocket_launch_count():
+    """succesful rocket count """
+    successful_launches_df = launch_data[launch_data['launch_success'] == True]
+    successful_rocket_info = successful_launches_df[['rocket']].to_dict(orient='index')
+    successful_rocket_types = []
+    for _, value in successful_rocket_info.items():
+        successful_rocket_types.append(value['rocket']['rocket_name'])
+
+    successful_rocket_type_series = pandas.Series(successful_rocket_types)
+    successful_rocket_type_counts = successful_rocket_type_series.value_counts()
+    return successful_rocket_type_counts
+
+
+def flights_by_rocket():
+    """ return flights by rocket graph """
+    rocket_launches = rocket_launch_count()
+    rocket_type_count_plot = rocket_launches.plot(kind='barh').get_figure()
+    rocket_count_list = list(rocket_launches)
     flights_by_rocket_stats = configure_graph(
                                     series_plot=rocket_type_count_plot,
                                     title='Number of Flights by Rocket Name',
@@ -116,9 +134,28 @@ def flights_by_rocket():
     return flights_by_rocket_stats
 
 
+def rocket_launch_stats():
+    """ average successful launches by rocket type"""
+    rocket_launch_averages = {}
+    for rocket_name, rocket_count, successful_rocket_count in zip(
+        rocket_launch_count().index.to_list(),
+        rocket_launch_count(),
+        successful_rocket_launch_count()):
+        success_average = round((successful_rocket_count/rocket_count * 100), 2)
+        rocket_launch_averages[rocket_name] = success_average
+        rocket_launch_averages_series = pandas.Series(rocket_launch_averages)
+        rocket_launch_averages_plot = rocket_launch_averages_series.plot(kind='barh').get_figure()
+    rocket_launch_stats = configure_graph(
+                                    series_plot=rocket_launch_averages_plot,
+                                    title='Successful Launch Averages by Rocket Name',
+                                    x_label='Averages (%)',
+                                    y_label='Name',
+                                    count_values=list(rocket_launch_averages_series))
+    return rocket_launch_stats
+
+
 def site_usage():
     """ return flights by rocket graph """
-    launch_data = Launch().get_data()
     launch_site_info = launch_data[['launch_site']].to_dict(orient='index')
     launch_site_locations = []
 
@@ -131,7 +168,7 @@ def site_usage():
     launch_site_location_count_list = list(launch_site_location_counts)
     launch_site_location_list_stats = configure_graph(
                                     series_plot=launch_site_location_count_plot,
-                                    title='Number of times Launch Site was used',
+                                    title='Number of times Launch Site were used',
                                     x_label='Times Used',
                                     y_label='Site',
                                     count_values=launch_site_location_count_list)
