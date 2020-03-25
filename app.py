@@ -198,7 +198,10 @@ def process_dataframe(result_df):
     else:
         data_df = result_df[fields]
         failure_details_df = json_normalize(result_df.iloc[0]['launch_failure_details'])
-        failure_details_df = failure_details_df.rename(columns={"reason": "failure_reason", "time":"timer_time_at_failure", "altitude": "failure_altitude" })
+        failure_details_df = failure_details_df.rename(
+                                                        columns={"reason": "failure_reason",
+                                                                "time":"timer_time_at_failure",
+                                                                "altitude": "failure_altitude" })
         data = concat(
             [data_df, failure_details_df],
             axis=0,
